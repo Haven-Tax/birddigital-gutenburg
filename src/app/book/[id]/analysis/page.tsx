@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 
-export default function BookAnalysis({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default function BookAnalysis({ id }: { id: string }) {
   const [analysisType, setAnalysisType] = useState<string | null>(null);
   const [analysisResult, setAnalysisResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
