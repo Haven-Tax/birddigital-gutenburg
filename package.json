@@ -18,6 +18,7 @@
     "drizzle-kit": "^0.27.2",
     "drizzle-orm": "^0.36.0",
     "epubjs": "^0.3.93",
+    "groq-sdk": "^0.7.0",
     "next": "15.0.2",
     "pdfjs-dist": "^4.8.69",
     "pg": "^8.13.1",

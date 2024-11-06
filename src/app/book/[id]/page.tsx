@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import BookAnalysis from './analysis/BookAnalysis';
 
 interface BookMetadata {
   title: string;
@@ -26,8 +27,8 @@ export default function BookDisplay({
   const [metadata, setMetadata] = useState<BookMetadata | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [showAnalysis, setShowAnalysis] = useState(false);
 
-  // Split bookContent into pages based on words
   const words = bookContent ? bookContent.split(/\s+/) : [];
   const totalPages = Math.ceil(words.length / WORDS_PER_PAGE);
 
@@ -53,10 +54,6 @@ export default function BookDisplay({
       .catch(() => setError('Error fetching book data'));
   }, [id]);
 
-  if (error)
-    return <div className="text-red-500 text-center mt-4">{error}</div>;
-
-  // Function to get the content for the current page based on words
   const getPageContent = () => {
     if (!bookContent) return '';
     const start = currentPage * WORDS_PER_PAGE;
@@ -64,52 +61,43 @@ export default function BookDisplay({
     return words.slice(start, end).join(' ');
   };
 
-  // Handlers for pagination
-  const goToNextPage = () => {
-    if (currentPage < totalPages - 1) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+  const goToNextPage = () =>
+    currentPage < totalPages - 1 && setCurrentPage(currentPage + 1);
+  const goToPreviousPage = () =>
+    currentPage > 0 && setCurrentPage(currentPage - 1);
 
-  const goToPreviousPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  if (error)
+    return <div className="text-red-500 text-center mt-4">{error}</div>;
 
   return (
     <div className="p-6 max-w-2xl mx-auto bg-gray-900 text-gray-100 rounded-lg shadow-md">
       <h2 className="text-3xl font-bold mb-4">
         {metadata?.title || 'Book Details'}
       </h2>
-
       {metadata?.author && (
         <p className="text-lg text-gray-400 mb-6">Author: {metadata.author}</p>
       )}
-
       {metadata?.releaseDate && (
         <p className="text-lg text-gray-400 mb-6">
           Release Date: {metadata.releaseDate}
         </p>
       )}
-
       {metadata?.ebookNumber && (
         <p className="text-lg text-gray-400 mb-6">
           EBook Number: {metadata.ebookNumber}
         </p>
       )}
-
       {metadata?.language && (
         <p className="text-lg text-gray-400 mb-6">
           Language: {metadata.language}
         </p>
       )}
-      <div className="mt-6">
-        <h3 className="text-xl font-semibold mb-2">Book Summary:</h3>
-        <p className="text-gray-300">{metadata?.summary}</p>
-        <br />
-      </div>
-
+      {metadata?.summary && (
+        <div className="mt-6">
+          <h3 className="text-xl font-semibold mb-2">Book Summary:</h3>
+          <p className="text-gray-300">{metadata.summary}</p>
+        </div>
+      )}
       {metadata?.coverImage && (
         <div className="mb-6">
           <Image
@@ -121,7 +109,6 @@ export default function BookDisplay({
           />
         </div>
       )}
-
       <div className="mb-6">
         <h3 className="text-xl font-semibold mb-2">Download Links:</h3>
         <ul className="list-disc ml-6 space-y-2">
@@ -139,11 +126,9 @@ export default function BookDisplay({
           ))}
         </ul>
       </div>
-
       <div className="mt-6">
         <h3 className="text-xl font-semibold mb-2">Content:</h3>
         <p className="text-gray-300 whitespace-pre-line">{getPageContent()}</p>
-
         <div className="mt-4 flex justify-between items-center">
           <button
             onClick={goToPreviousPage}
@@ -163,6 +148,19 @@ export default function BookDisplay({
             Next
           </button>
         </div>
+      </div>
+      <div className="mt-8">
+        <button
+          onClick={() => setShowAnalysis(!showAnalysis)}
+          className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+        >
+          {showAnalysis ? 'Hide Analysis' : 'Show Analysis'}
+        </button>
+        {showAnalysis && id && (
+          <div className="mt-6">
+            <BookAnalysis id={id} bookContent={bookContent || ''} />
+          </div>
+        )}
       </div>
     </div>
   );
