@@ -3,14 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen": "bunx drizzle-kit generate",
+    "mig": "bunx drizzle-kit migrate"
   },
   "dependencies": {
     "@shadcn/ui": "^0.0.4",
+    "@vercel/postgres": "^0.10.0",
     "cheerio": "^1.0.0",
+    "dotenv": "^16.4.5",
+    "drizzle-kit": "^0.27.2",
     "drizzle-orm": "^0.36.0",
     "epubjs": "^0.3.93",
     "next": "15.0.2",
