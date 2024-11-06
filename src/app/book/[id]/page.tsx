@@ -7,6 +7,8 @@ interface BookMetadata {
   title: string;
   author: string;
   coverImage: string | null;
+  language: string;
+  summary: string;
   releaseDate?: string;
   ebookNumber?: string;
   downloadLinks: { format: string; url: string }[];
@@ -84,6 +86,29 @@ export default function BookDisplay({
       {metadata?.author && (
         <p className="text-lg text-gray-400 mb-6">Author: {metadata.author}</p>
       )}
+
+      {metadata?.releaseDate && (
+        <p className="text-lg text-gray-400 mb-6">
+          Release Date: {metadata.releaseDate}
+        </p>
+      )}
+
+      {metadata?.ebookNumber && (
+        <p className="text-lg text-gray-400 mb-6">
+          EBook Number: {metadata.ebookNumber}
+        </p>
+      )}
+
+      {metadata?.language && (
+        <p className="text-lg text-gray-400 mb-6">
+          Language: {metadata.language}
+        </p>
+      )}
+      <div className="mt-6">
+        <h3 className="text-xl font-semibold mb-2">Book Summary:</h3>
+        <p className="text-gray-300">{metadata?.summary}</p>
+        <br />
+      </div>
 
       {metadata?.coverImage && (
         <div className="mb-6">

@@ -38,15 +38,23 @@ export async function GET(request: Request) {
 
     // Extract release date
     const releaseDate =
-      $('#bibrec > div > table > tbody > tr:nth-child(19) > td')
-        .text()
-        .trim() || 'Unknown Release Date';
+      $('#bibrec tr:contains("Release Date") td').text().trim() ||
+      'Unknown Release Date';
 
-    // Extract EBook-No.
+    // Extract EBook-No. using a more flexible selector
     const ebookNumber =
-      $('#bibrec > div > table > tbody > tr:nth-child(18) > td')
+      $('#bibrec tr:contains("EBook-No.") td').text().trim() ||
+      'Unknown EBook-No.';
+
+    // Extract language using a more precise selector
+    const language =
+      $('#bibrec tr')
+        .filter(
+          (_, element) => $(element).find('th').text().trim() === 'Language'
+        )
+        .find('td')
         .text()
-        .trim() || 'Unknown EBook-No.';
+        .trim() || 'Unknown Language';
 
     // Extract download links
     const downloadLinks: { format: string; url: string }[] = [];
@@ -62,13 +70,20 @@ export async function GET(request: Request) {
       }
     });
 
+    // Extract Summary
+    const summary =
+      $('#bibrec tr:contains("Summary") td').text().trim() ||
+      'No Summary Available';
+
     const metadata = {
       title,
       author,
-      coverImage,
       releaseDate,
       ebookNumber,
+      language,
+      coverImage,
       downloadLinks,
+      summary,
     };
 
     return NextResponse.json({ content, metadata });
