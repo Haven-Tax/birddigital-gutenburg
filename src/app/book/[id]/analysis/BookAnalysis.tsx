@@ -2,7 +2,11 @@
 
 import { useState } from 'react';
 
-export default function BookAnalysis({ id }: { id: string }) {
+interface BookAnalysisProps {
+  id: string;
+}
+
+export default function BookAnalysis({ id }: BookAnalysisProps) {
   const [analysisType, setAnalysisType] = useState<string | null>(null);
   const [analysisResult, setAnalysisResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +23,7 @@ export default function BookAnalysis({ id }: { id: string }) {
         body: JSON.stringify({
           text: 'Sample book content here',
           analysisType: type,
-        }), // Replace with actual book text
+        }),
       });
 
       const data = await response.json();
