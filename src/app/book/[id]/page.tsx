@@ -15,7 +15,7 @@ interface BookMetadata {
   downloadLinks: { format: string; url: string }[];
 }
 
-const WORDS_PER_PAGE = 400;
+const wordsPerPage = 400;
 
 export default function BookDisplay({
   params,
@@ -30,7 +30,7 @@ export default function BookDisplay({
   const [showAnalysis, setShowAnalysis] = useState(false);
 
   const words = bookContent ? bookContent.split(/\s+/) : [];
-  const totalPages = Math.ceil(words.length / WORDS_PER_PAGE);
+  const totalPages = Math.ceil(words.length / wordsPerPage);
 
   useEffect(() => {
     params
@@ -63,8 +63,8 @@ export default function BookDisplay({
 
   const getPageContent = () => {
     if (!bookContent) return '';
-    const start = currentPage * WORDS_PER_PAGE;
-    const end = start + WORDS_PER_PAGE;
+    const start = currentPage * wordsPerPage;
+    const end = start + wordsPerPage;
     return words.slice(start, end).join(' ');
   };
 
