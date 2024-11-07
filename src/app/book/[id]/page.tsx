@@ -3,6 +3,9 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import BookAnalysis from './analysis/BookAnalysis';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 interface BookMetadata {
   title: string;
@@ -27,7 +30,6 @@ export default function BookDisplay({
   const [metadata, setMetadata] = useState<BookMetadata | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [showAnalysis, setShowAnalysis] = useState(false);
 
   const words = bookContent ? bookContent.split(/\s+/) : [];
   const totalPages = Math.ceil(words.length / wordsPerPage);
@@ -77,62 +79,72 @@ export default function BookDisplay({
     return <div className="text-red-500 text-center mt-4">{error}</div>;
 
   return (
-    <div className="p-6 max-w-2xl mx-auto bg-gray-900 text-gray-100 rounded-lg shadow-md">
-      <h2 className="text-3xl font-bold mb-4">
-        {metadata?.title || 'Book Details'}
-      </h2>
-      {metadata?.author && (
-        <p className="text-lg text-gray-400 mb-6">Author: {metadata.author}</p>
-      )}
-      {metadata?.releaseDate && (
-        <p className="text-lg text-gray-400 mb-6">
-          Release Date: {metadata.releaseDate}
-        </p>
-      )}
-      {metadata?.ebookNumber && (
-        <p className="text-lg text-gray-400 mb-6">
-          EBook Number: {metadata.ebookNumber}
-        </p>
-      )}
-      {metadata?.language && (
-        <p className="text-lg text-gray-400 mb-6">
-          Language: {metadata.language}
-        </p>
-      )}
-      {metadata?.summary && (
-        <div className="mt-6">
-          <h3 className="text-xl font-semibold mb-2">Book Summary:</h3>
-          <p className="text-gray-300">{metadata.summary}</p>
-        </div>
-      )}
-      {metadata?.coverImage && (
-        <div className="mb-6">
-          <Image
-            src={metadata.coverImage}
-            alt="Book Cover"
-            width={192}
-            height={288}
-            className="rounded-md shadow"
-          />
-        </div>
-      )}
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-2">Download Links:</h3>
-        <ul className="list-disc ml-6 space-y-2">
-          {metadata?.downloadLinks.map((link, index) => (
-            <li key={index}>
-              <a
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:text-blue-300 hover:underline"
-              >
-                {link.format}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className="p-8 max-w-3xl mx-auto bg-gray-900 text-gray-100 rounded-lg shadow-lg space-y-6 min-h-screen">
+      <Card className="bg-gray-800 text-gray-100 shadow-md">
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold">
+            {metadata?.title || 'Book Details'}
+          </CardTitle>
+          <div className="flex space-x-2 mt-2">
+            {metadata?.author && (
+              <Badge variant="secondary" className="text-gray-200 bg-gray-700">
+                {metadata.author}
+              </Badge>
+            )}
+            {metadata?.releaseDate && (
+              <Badge variant="secondary" className="text-gray-200 bg-gray-700">
+                Released: {metadata.releaseDate}
+              </Badge>
+            )}
+            {metadata?.ebookNumber && (
+              <Badge variant="secondary" className="text-gray-200 bg-gray-700">
+                EBook No: {metadata.ebookNumber}
+              </Badge>
+            )}
+            {metadata?.language && (
+              <Badge variant="secondary" className="text-gray-200 bg-gray-700">
+                Language: {metadata.language}
+              </Badge>
+            )}
+          </div>
+        </CardHeader>
+        <CardContent>
+          {metadata?.summary && (
+            <div className="mt-4">
+              <h3 className="text-xl font-semibold mb-2">Book Summary:</h3>
+              <p className="text-gray-300">{metadata.summary}</p>
+            </div>
+          )}
+          {metadata?.coverImage && (
+            <div className="my-4">
+              <Image
+                src={metadata.coverImage}
+                alt="Book Cover"
+                width={192}
+                height={288}
+                className="rounded-md shadow"
+              />
+            </div>
+          )}
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-2">Download Links:</h3>
+            <ul className="list-disc ml-6 space-y-2 text-gray-300">
+              {metadata?.downloadLinks.map((link, index) => (
+                <li key={index}>
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-300 hover:underline"
+                  >
+                    {link.format}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
       <div className="mt-6">
         <h3 className="text-xl font-semibold mb-2">Content:</h3>
         <p className="text-gray-300 whitespace-pre-line">{getPageContent()}</p>
