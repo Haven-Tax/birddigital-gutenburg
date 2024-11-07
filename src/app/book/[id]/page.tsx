@@ -145,42 +145,48 @@ export default function BookDisplay({
           </div>
         </CardContent>
       </Card>
-      <div className="mt-6">
-        <h3 className="text-xl font-semibold mb-2">Content:</h3>
-        <p className="text-gray-300 whitespace-pre-line">{getPageContent()}</p>
-        <div className="mt-4 flex justify-between items-center">
-          <button
-            onClick={goToPreviousPage}
-            disabled={currentPage === 0}
-            className="px-4 py-2 bg-blue-600 text-white rounded disabled:bg-gray-600 hover:bg-blue-700"
-          >
-            Previous
-          </button>
-          <span>
-            Page {currentPage + 1} of {totalPages}
-          </span>
-          <button
-            onClick={goToNextPage}
-            disabled={currentPage >= totalPages - 1}
-            className="px-4 py-2 bg-blue-600 text-white rounded disabled:bg-gray-600 hover:bg-blue-700"
-          >
-            Next
-          </button>
-        </div>
-      </div>
-      <div className="mt-8">
-        <button
-          onClick={() => setShowAnalysis(!showAnalysis)}
-          className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
-        >
-          {showAnalysis ? 'Hide Analysis' : 'Show Analysis'}
-        </button>
-        {showAnalysis && id && (
-          <div className="mt-6">
-            <BookAnalysis id={id} bookContent={bookContent || ''} />
+
+      <Card className="bg-gray-800 text-gray-100 shadow-md mt-4">
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold">Content:</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-300 whitespace-pre-line">
+            {getPageContent()}
+          </p>
+          <div className="mt-4 flex justify-between items-center">
+            <Button
+              onClick={goToPreviousPage}
+              disabled={currentPage === 0}
+              className="bg-blue-600 text-white rounded disabled:bg-gray-600 hover:bg-blue-700"
+            >
+              Previous
+            </Button>
+            <span className="text-gray-400">
+              Page {currentPage + 1} of {totalPages}
+            </span>
+            <Button
+              onClick={goToNextPage}
+              disabled={currentPage >= totalPages - 1}
+              className="bg-blue-600 text-white rounded disabled:bg-gray-600 hover:bg-blue-700"
+            >
+              Next
+            </Button>
           </div>
-        )}
-      </div>
+        </CardContent>
+      </Card>
+
+      {/* Book Analysis Card */}
+      <Card className="bg-gray-800 text-gray-100 shadow-md mt-6">
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold">
+            Analysis for Book ID: {id}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <BookAnalysis id={id || ''} bookContent={bookContent || ''} />
+        </CardContent>
+      </Card>
     </div>
   );
 }
