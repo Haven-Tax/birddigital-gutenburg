@@ -41,6 +41,13 @@ export default function BookDisplay({
   useEffect(() => {
     if (!id) return;
 
+    // Save the book search
+    fetch('/api/saveSearch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bookId: id }),
+    }).catch((error) => console.error('Error saving book search:', error));
+
     fetch(`/api/gutenberg/fetchBook?bookId=${id}`)
       .then((res) => res.json())
       .then((data) => {
