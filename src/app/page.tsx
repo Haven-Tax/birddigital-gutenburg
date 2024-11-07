@@ -45,6 +45,13 @@ export default function Home() {
     fetchRecentSearches();
   }, []);
 
+  // Handler for Enter key press
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-gray-100 p-4">
       <div className="w-full max-w-md bg-gray-800 shadow-lg rounded-lg p-6 text-center">
@@ -58,6 +65,7 @@ export default function Home() {
             placeholder="Enter Book ID"
             value={bookId}
             onChange={(e) => setBookId(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="w-full px-4 py-3 border border-gray-700 rounded-lg bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
